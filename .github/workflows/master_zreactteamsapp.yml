@@ -52,6 +52,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'zReactTeamsApp'
-          slot-name: 'Production'
+          slot-name: 'Dev'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F1B7AA425B304F90A60B678E2FF8B6CF }}
           package: .

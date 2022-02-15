@@ -8,7 +8,6 @@ const PORT = 5000
 
 // middleware
 app.use(express.static(path.join(__dirname, "..", "build")))
-app.use(express.static("public"))
 
 // endpoints
 app.get("/api/contracts", riskController.getContracts);
