@@ -17,7 +17,6 @@
 // reportWebVitals();
 
 import { render } from "react-dom";
-import { BrowserRouter } from "react-router-dom";
 import router from './config/router'
 
 const rootElement = document.getElementById("root");

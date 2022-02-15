@@ -4,11 +4,6 @@ import axios from 'axios';
 import ContractList from '../components/ContractsList';
 // import env from '../conf'
 
-const URL = "https://sg7app.dassian.org:44300/sap/opu/odata/DSN/COPB_RISK_REGISTER_SRV/"
-const entities = {
-    contractList: "xDSNxC_risk_contract_copb"
-}
-
 class RiskRegister extends Component {
     constructor(){
         super()
