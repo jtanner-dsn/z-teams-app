@@ -4,9 +4,10 @@ require('dotenv').config()
 const riskController = require('./riskController');
 const app = express(); // create express app
 
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 
 // middleware
+app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(express.static(path.join(__dirname, "..", "build")))
 
 // endpoints
