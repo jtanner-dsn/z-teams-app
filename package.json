@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "npm run build && (cd server && npm start)",
+    "start:azure": "cd server && npm start",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
