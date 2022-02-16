@@ -20,8 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start-local": "npm run build && (cd server && npm start)",
-    "start": "node server/index.js",
+    "start": "npm run build && (cd server && npm start)",
+    "start-server": "node server/index.js",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
