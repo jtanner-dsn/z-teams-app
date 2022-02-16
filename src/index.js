@@ -18,6 +18,8 @@
 
 import { render } from "react-dom";
 import router from './config/router'
+import { initializeIcons } from "@fluentui/react";
+initializeIcons();
 
 const rootElement = document.getElementById("root");
 render(
