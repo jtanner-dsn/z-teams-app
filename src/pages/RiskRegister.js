@@ -76,6 +76,7 @@ class RiskRegister extends Component {
                     autoComplete='on'
                     allowFreeform='true'
                     options={contractOptions}
+                    styles={ { root: { maxWidth: 300 } } }
                     onChange={(e, o) => this.onContractChange(o)}
                 />
 
@@ -88,6 +89,7 @@ class RiskRegister extends Component {
                         autoComplete='on'
                         allowFreeform='true'
                         options={riskOptions}
+                        styles={ { root: { maxWidth: 300 } } }
                         onChange={(e, o) => this.onRiskChange(o)}
                     />
                     :
