@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "adal-angular": "^1.0.18",
     "axios": "^0.25.0",
-    "d3": "^7.3.0",
+    "d3": "^5.9.7",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "nodemon": "^2.0.15",
@@ -24,7 +24,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start-local": "npm run start-client && nodemon server/index.js",
+    "test-build": "npm run build && nodemon server/index.js",
     "start": "node server/index.js",
     "start-client": "react-scripts start",
     "start-server": "nodemon server/index.js",

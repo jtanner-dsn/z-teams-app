@@ -1,4 +1,5 @@
-import * as d3 from "https://cdn.skypack.dev/d3@5.9.7";
+// import * as d3 from "https://cdn.skypack.dev/d3@5.9.7";
+import * as d3 from 'd3';
 
 export default {
     _d3Stuff: function(container, iWidth, data, red, yellow, green){
