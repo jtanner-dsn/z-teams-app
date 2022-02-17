@@ -1,4 +1,4 @@
-import * as d3 from 'd3'
+import * as d3 from "https://cdn.skypack.dev/d3@5.9.7";
 
 export default {
     _d3Stuff: function(container, iWidth, data, red, yellow, green){
@@ -151,9 +151,9 @@ export default {
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                // div.html(formatTime(cxValue(d)) + "<br/>" + d.text)
-                //     .style("left", (d3.event.pageX) + "px")
-                //     .style("top", (d3.event.pageY - 28) + "px");
+                div.html(formatTime(cxValue(d)) + "<br/>" + d.text)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
             })
             .on("mouseout", function (d) {
                 div.transition()
@@ -194,9 +194,9 @@ export default {
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                // div.html(formatTime(oxValue(d)) + "<br/>" + d.text)
-                //     .style("left", (d3.event.pageX) + "px")
-                //     .style("top", (d3.event.pageY - 28) + "px");
+                div.html(formatTime(oxValue(d)) + "<br/>" + d.text)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
             })
             .on("mouseout", function (d) {
                 div.transition()

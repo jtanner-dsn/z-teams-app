@@ -4,7 +4,7 @@ import axios from 'axios';
 import ContractList from '../components/ContractsList';
 import { ComboBox, IComboBoxOption } from '@fluentui/react'
 import WaterfallChart from '../components/WaterfallChart';
-// import env from '../conf'
+import '../stylesheets/RiskRegister.css'
 
 class RiskRegister extends Component {
     constructor(){
@@ -18,8 +18,6 @@ class RiskRegister extends Component {
             selectedRisk: '',
             waterfallData: {}
         }
-
-
     }
 
     onContractChange(option) {

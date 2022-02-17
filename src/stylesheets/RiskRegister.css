@@ -1,0 +1,91 @@
+body {
+    margin: 0px;
+    overflow: hidden;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+domain {
+    fill: none;
+}
+
+.RiskRegister {
+    padding: 10px 15px;
+}
+
+.WaterfallChart {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 0px;
+}
+
+.chart-container {
+    width: 600px;
+    height: 450px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px gray;
+    margin-top: 10px;
+}
+
+circle {
+    fill: steelblue;
+    opacity: 0.8;
+}
+.line-path{
+    fill: none;
+    stroke: black;
+    stroke-width: 5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+.line-original{
+    stroke: #0a4577;
+    stroke-width: 3;
+    stroke-dasharray: 10 10;
+}
+.line-today{
+    stroke: #aeaeae;
+    stroke-width: 3;
+    stroke-dasharray: 10, 10;
+}
+
+text {
+    font-family: sans-serif;
+}
+
+.tick text {
+    fill: #635F5D;
+}
+
+.tick line {
+    stroke: #C0C0BB;
+}
+
+.axis-label {
+    font-size: 1em;
+    fill: #8E8883;
+}
+
+.title {
+    font-size: 2em;
+    fill: #635F5D;
+}
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.legend-group text {
+    font-weight: bold;
+    fill: black;
+}
+
