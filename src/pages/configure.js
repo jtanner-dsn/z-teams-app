@@ -2,6 +2,8 @@ import React from 'react';
 import * as msTeams from '@microsoft/teams-js';
 
 export default function Configure() {
+    msTeams.initialize()
+
     msTeams.settings.registerOnSaveHandler(saveEvent => {
         msTeams.settings.setSettings({
             contentUrl: window.location.origin,
@@ -13,6 +15,6 @@ export default function Configure() {
     msTeams.settings.setValidityState(true);
 
     return (
-        <h1>Configure</h1>
+        <h2>Configure</h2>
     );
 }

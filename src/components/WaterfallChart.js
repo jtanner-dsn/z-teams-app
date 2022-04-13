@@ -2,15 +2,16 @@ import React from "react";
 import axios from 'axios'
 import waterfallUtility from '../utilities/waterfall'
 import { FontSizes } from "@fluentui/theme";
-import { Text } from '@fluentui/react';
+import { PrimaryButton, DefaultButton, Text, TextField } from '@fluentui/react';
 
 
 function WaterfallChart(props) {
     let { riskData, waterfallData } = props
-    let { riskDescription, riskProfile } = riskData
+    const { riskDescription, riskShortDescription, riskProfile, ID } = riskData
 
     // state
     let [scoreThresholds, setThresholds] = React.useState([])
+    let [shortDesc, setShortDesc] = React.useState(riskShortDescription)
     waterfallUtility._d3Stuff.bind(this)
     waterfallUtility.renderLegend.bind(this)
 
@@ -66,11 +67,34 @@ function WaterfallChart(props) {
 
     }, [scoreThresholds, waterfallData])
 
+    const saveRisk = (e) => {
+        console.log('saving')
+        axios.put(`/api/risk/${ID.split('-')[1]}`, {
+            data: {
+                riskShortDescription: shortDesc
+            }
+        })
+        .then(response => { console.log(response)})
+        .catch(error => {
+            console.log(error)
+        })
 
+    }
+    const cancelChanges = (e) => {
+        setShortDesc(riskShortDescription)
+    }
     
     return (
         <div className="WaterfallChart" >
             <Text variant="xxLarge" > {riskDescription} </Text>
+            <TextField label="Short Description"
+                value={shortDesc}
+                onChange={(e) => setShortDesc(e.target.value)}
+            />
+            <div>
+                <DefaultButton text="Cancel" onClick={cancelChanges}/>
+                <PrimaryButton text="Save Changes" onClick={saveRisk} />
+            </div>
             <svg className="chart-container"></svg>
         </div>
     )

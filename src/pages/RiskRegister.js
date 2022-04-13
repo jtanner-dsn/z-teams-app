@@ -1,8 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
 import axios from 'axios';
-import ContractList from '../components/ContractsList';
-import { ComboBox, IComboBoxOption } from '@fluentui/react'
+import { ComboBox } from '@fluentui/react'
 import WaterfallChart from '../components/WaterfallChart';
 import '../stylesheets/RiskRegister.css'
 
