@@ -22,8 +22,10 @@
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "request": "^2.88.2",
     "tough-cookie": "^4.0.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xml2js": "^0.4.23"
   },
   "scripts": {
     "test-build": "npm run build && nodemon server/index.js",

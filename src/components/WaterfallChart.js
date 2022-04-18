@@ -69,12 +69,15 @@ function WaterfallChart(props) {
 
     const saveRisk = (e) => {
         console.log('saving')
-        axios.put(`/api/risk/${ID.split('-')[1]}`, {
+        axios.patch(`/api/risk/${ID}`, {
             data: {
                 riskShortDescription: shortDesc
             }
         })
-        .then(response => { console.log(response)})
+        .then(response => {
+            alert("Risk successfully saved.")
+            
+        })
         .catch(error => {
             console.log(error)
         })

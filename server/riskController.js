@@ -1,36 +1,124 @@
 // libraries
 const axios = require('axios')
 const { wrapper } = require('axios-cookiejar-support')
+const { response } = require('express')
 const { CookieJar } = require('tough-cookie')
+const { entities, nav, base_url } = require('./metadata')
+const xml2js = require('xml2js');
 
 // set up cookie
 wrapper(axios)
-// const jar = new CookieJar()
 
 // service constants
-const RISK_SERVICE = "https://sg7app.dassian.org:44300/sap/opu/odata/DSN/COPB_RISK_REGISTER_SRV/"
-const entities = {
-    contracts: "xDSNxC_risk_contract_copb",
-    risks: "xDSNxc_risk_object_copb",
-    scoreThresholds: "xDSNxi_risk_score_thresholds"
-}
-
-
-
-const nav = {
-    to_risk: "/to_risk",
-    to_riskWaterfall: "/to_riskWaterfall"
-}
 const { DASSIAN_USERNAME, DASSIAN_PASSWORD } = process.env
 const auth = {
     username: DASSIAN_USERNAME,
     password: DASSIAN_PASSWORD
 }
 
-const getBasicAuth = (u, p) => `Basic ${Buffer.from(`${u}:${p}`).toString('base64')}`
+// functions
+const getAuth = (u, p) => `Basic ${Buffer.from(`${u}:${p}`).toString('base64')}`
+const formatCookies = (cookies) => cookies.map(c => c.split(";")[0]).join('; ')
 
 module.exports = {
-    // GET
+    /**
+     * function
+     * @param {string}  entity  - the entity set name
+     * @param {boolean} isSet   - is the call for a set or individual record
+     * @param {string}  navProp - the navigation property
+     */
+    get: (entity, isSet = false, navProp = '') => {
+        
+        let url = (id) => base_url + entity + ( isSet ? '' : `('${id}')` ) + navProp
+
+        return function(req, res, next) {
+            let { id } = req.params
+            
+            axios.get( url(id), { auth })
+                .then(response => {
+                    res.status(200).send(response.data.d.results ? response.data.d.results : response.data.d)
+                })
+                .catch(error => {
+                    res.status(error.response.status).send(error)
+                })
+        }
+    },
+    patch: (entity) => {
+        return function(req, res, next){
+            
+            let { id } = req.params
+            let url = base_url + entity + `('${id}')`
+            console.log(url)
+
+            axios({
+                method: "head",
+                auth,
+                url,
+                headers: { 'x-csrf-token': 'Fetch' }
+            })
+            .then(headResponse => {
+                const token = headResponse.headers['x-csrf-token']
+                const cookies = headResponse.headers['set-cookie']
+
+                axios({
+                    method: 'patch',
+                    url,
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json',
+                        'Cookie': formatCookies(cookies)
+                    },
+                    data: req.body.data
+                })
+                .then(patchResponse => { res.status(204).send(patchResponse.data) })
+                .catch(patchError => { console.log(patchError.message) })
+            })
+            .catch(headError => { console.log(headError) })
+        }
+    }
+
+}
+
+    // updateRisk: (req, res, next) => {
+    //     const { id } = req.params
+    //     const bodyData = { ...req.body.data }
+    //     const url = `${RISK_SERVICE}${entities.risks}('id-${riskId}')`
+    //     const jar = new CookieJar()
+
+    //     axios.head(url, {
+    //         auth,
+    //         headers: {
+    //             "x-csrf-token" : "Fetch",
+    //         }
+    //     })
+    //     .then(response => {
+    //         const token = response.headers['x-csrf-token']
+    //         console.log(response.headers)
+    //         console.log('- - - - - - - - - - - - - - got the token: ' + `'${token}'` + ' - - - - - - - - - - - - - -')
+
+    //         axios.patch(url, {
+    //             auth,
+    //             headers: {
+    //                 "X-CSRF-Token": token,
+    //             },
+    //             // data: bodyData
+    //         })
+    //         .then(putRes => {
+    //             console.log('update successful!')
+    //             res.status(201).send(putRes)
+    //         })
+    //         .catch(putError => {
+    //             console.log(putError.request.res.headers)
+    //             res.status(putError.response.status).send(putError)
+    //         })
+    //     })
+    //     .catch(error => {
+    //         res.status(error.response.status).send(error)
+    //     })
+    // }
+
+/*
+
     getContracts: (req, res, next) => {
         axios.get(`${RISK_SERVICE}${entities.contracts}`, { auth })
             .then(response => { res.status(200).send(response.data.d.results) })
@@ -38,6 +126,9 @@ module.exports = {
     },
     getContract: (req, res, next) => {
         let { contractId } = req.params
+        axios.get(`${RISK_SERVICE}${entities.contracts}('${contractId}')`, { auth })
+            .then(response => { res.status(200).send(response.data.d) })
+            .catch(error => { res.status(error.response.status).send(error) })
     },
     getRisksOnContract: (req, res, next) => {
         let { contractId } = req.params
@@ -56,8 +147,11 @@ module.exports = {
             res.status(404).send('ERROR: no risk id')
             return
         }
+        const url = `${RISK_SERVICE}${entities.risks}('id-${riskId}')`
 
-        // axios.get(``)
+        axios.get(url, { auth })
+            .then(response => { res.status(200).send(response.data.d) })
+            .catch(error => { res.status(error.response.status).send(error) })
     },
     getWaterfall: (req, res, next) => {
         let { riskId } = req.params
@@ -74,43 +168,5 @@ module.exports = {
         axios.get(`${RISK_SERVICE}${entities.scoreThresholds}`, { auth })
             .then(response => res.status(200).send(response.data.d.results))
             .catch(error => console.log(error))
-    },
-    // UPDATE
-    updateRisk: (req, res, next) => {
-        const { riskId } = req.params
-        const bodyData = { ...req.body.data }
-        const url = `${RISK_SERVICE}${entities.risks}('id-${riskId}')`
-        const jar = new CookieJar()
-
-        axios.get(url, {
-            jar,
-            headers: {
-                'Authorization': getBasicAuth(DASSIAN_USERNAME, DASSIAN_PASSWORD),
-                "x-csrf-token" : "Fetch"
-            }
-        })
-        .then(response => {
-            const token = response.headers['x-csrf-token']
-            console.log('- - - - - - - - - - - - - - got the token: ' + `'${token}'` + ' - - - - - - - - - - - - - -')
-
-            axios.patch(url, {
-                jar,
-                headers: {
-                    'Authorization': getBasicAuth(DASSIAN_USERNAME, DASSIAN_PASSWORD),
-                    "X-CSRF-Token": token
-                },
-                data: bodyData
-            })
-            .then(putRes => {
-                console.log('update successful!')
-            })
-            .catch(putError => {
-                console.log("patch Error: " + putError.message)
-                res.status(putError.response.status).send(putError)
-            })
-        })
-        .catch(error => {
-            res.status(error.response.status).send(error)
-        })
     }
-}
+*/

@@ -41,7 +41,7 @@ class RiskRegister extends Component {
     }
 
     getRisks(contractId){ return axios.get(`/api/risksoncontract/${contractId}`, {}) }
-    getWaterfall(riskId){ return axios.get(`/api/waterfall/${riskId.split('-')[1]}`, {}) }
+    getWaterfall(riskId){ return axios.get(`/api/waterfall/${riskId}`, {}) }
 
     componentDidMount(){
         axios.get(`/api/contracts`, {})
